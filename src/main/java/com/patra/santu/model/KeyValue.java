@@ -1,4 +1,4 @@
-package com.patra.santu.api.model;
+package com.patra.santu.model;
 
 import lombok.Data;
 

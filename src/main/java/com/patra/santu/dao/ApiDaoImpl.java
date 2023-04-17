@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
-import com.patra.santu.api.model.Access;
-import com.patra.santu.api.model.KeyValue;
+import com.patra.santu.service.model.Access;
+import com.patra.santu.model.KeyValue;
 
 @Repository
 public class ApiDaoImpl implements ApiDao {

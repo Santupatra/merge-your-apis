@@ -2,6 +2,8 @@ package com.patra.santu.api.model;
 
 import java.util.List;
 
+import com.patra.santu.model.KeyValue;
+
 import lombok.Data;
 
 @Data

@@ -13,13 +13,14 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.patra.santu.api.model.Access;
-import com.patra.santu.api.model.KeyValue;
 import com.patra.santu.api.model.Mapping;
 import com.patra.santu.api.model.Request;
 import com.patra.santu.api.model.Response;
 import com.patra.santu.api.model.Type;
 import com.patra.santu.dao.ApiDao;
+import com.patra.santu.mapper.ApiToServiceMapper;
+import com.patra.santu.model.KeyValue;
+import com.patra.santu.service.model.Access;
 
 @Service
 public class ApiServiceimpl implements ApiService {
@@ -34,7 +35,9 @@ public class ApiServiceimpl implements ApiService {
 		List<ResponseEntity<String>> callNormals = null;
 		switch (type) {
 		case NORMAL:
-			callNormals = callNormal(request.getAccess());
+			List<Access> accessList = ApiToServiceMapper.convertAccessList(request.getAccess());
+			
+			callNormals = callNormal(accessList);
 		default:
 
 		}

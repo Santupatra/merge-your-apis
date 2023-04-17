@@ -1,9 +1,11 @@
-package com.patra.santu.api.model;
+package com.patra.santu.service.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpMethod;
 
+import com.patra.santu.api.model.Mapping;
 import com.patra.santu.model.KeyValue;
 
 import lombok.AllArgsConstructor;
@@ -22,5 +24,7 @@ public class Access {
 	private String body;
 	private List<String> pathVeriable;
 	private Mapping mapping;
+	private Map<?, ?> singleResponse;
+	private List<Map<?, ?>> listResponse;
 
 }

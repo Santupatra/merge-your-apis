@@ -2,7 +2,8 @@ package com.patra.santu.dao;
 
 import org.springframework.http.ResponseEntity;
 
-import com.patra.santu.api.model.Access;
+import com.patra.santu.service.model.Access;
+
 
 public interface ApiDao {
 
