@@ -36,7 +36,7 @@ public class ApiServiceimpl implements ApiService {
 		switch (type) {
 		case NORMAL:
 			List<Access> accessList = ApiToServiceMapper.convertAccessList(request.getAccess());
-			
+
 			callNormals = callNormal(accessList);
 		default:
 
@@ -80,8 +80,8 @@ public class ApiServiceimpl implements ApiService {
 			setResponseToNextAccess(access2, response1);
 			List<Map<?, ?>> listResponse = access2.getListResponse();
 			for (int n = 0; n < listResponse.size(); n++) {
-				mappingKeyValues(access2, listResponse.get(n));
-				ResponseEntity<String> response2 = apiDao.callApi(access2);
+				Access access = mappingKeyValues(access2, listResponse.get(n));
+				ResponseEntity<String> response2 = apiDao.callApi(access);
 				responseList.add(response2);
 			}
 		}
@@ -114,12 +114,15 @@ public class ApiServiceimpl implements ApiService {
 		}
 	}
 
-	private void mappingKeyValues(Access access, Map<?, ?> response) {
-		Mapping mapping = access.getMapping();
+	private Access mappingKeyValues(Access olaAccess, Map<?, ?> response) {
+		Mapping mapping = olaAccess.getMapping();
+		Access newAccess = new Access(olaAccess.getUrl(), olaAccess.getMethod(), olaAccess.getParams(),
+				olaAccess.getHeaders(), olaAccess.getBody(), olaAccess.getPathVeriable(), olaAccess.getMapping(),
+				olaAccess.getSingleResponse(), olaAccess.getListResponse());
 		// path
 		List<String> pathVeriable = mapping.getPathVeriable();
 		if (pathVeriable != null) {
-			List<String> existingPathVeriable = access.getPathVeriable();
+			List<String> existingPathVeriable = newAccess.getPathVeriable();
 			List<String> newPathVeriables = new ArrayList<String>();
 			for (String key : pathVeriable) {
 				String[] split = key.split("[.]");
@@ -129,16 +132,16 @@ public class ApiServiceimpl implements ApiService {
 			}
 			if (existingPathVeriable != null) {
 				existingPathVeriable.addAll(newPathVeriables);
-				access.setPathVeriable(existingPathVeriable);
+				newAccess.setPathVeriable(existingPathVeriable);
 			} else {
-				access.setPathVeriable(newPathVeriables);
+				newAccess.setPathVeriable(newPathVeriables);
 			}
 
 		}
 //param
 		List<KeyValue> params = mapping.getParams();
 		if (params != null) {
-			List<KeyValue> existingParams = access.getParams();
+			List<KeyValue> existingParams = newAccess.getParams();
 			List<KeyValue> newParams = new ArrayList<KeyValue>();
 			for (KeyValue keyValue : params) {
 				String[] split = keyValue.getValue().split("[.]");
@@ -149,14 +152,14 @@ public class ApiServiceimpl implements ApiService {
 			}
 			if (existingParams != null) {
 				existingParams.addAll(newParams);
-				access.setParams(existingParams);
+				newAccess.setParams(existingParams);
 			} else {
-				access.setParams(newParams);
+				newAccess.setParams(newParams);
 			}
 		}
 //body
 		List<String> bodyKeys = mapping.getBody();
-		String body = access.getBody();
+		String body = newAccess.getBody();
 		if (bodyKeys != null && body != null) {
 			List<String> bodyVeriables = new ArrayList<String>();
 			for (String key : bodyKeys) {
@@ -167,6 +170,7 @@ public class ApiServiceimpl implements ApiService {
 			}
 			MessageFormat.format(body, bodyVeriables);
 		}
+		return newAccess;
 	}
 
 	private Map<?, ?> getValueFromMap(Map<?, ?> singleResponse, String[] split) {
