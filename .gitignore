@@ -1,4 +1,7 @@
+target/
 .classpath
 .project
 .settings/
-*/target/*
+bin/
+.clover/
+.idea/
