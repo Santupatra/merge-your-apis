@@ -4,4 +4,4 @@ target/
 .settings/
 bin/
 .clover/
-.idea/
+.factorypath
